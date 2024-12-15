@@ -29,6 +29,9 @@
             font-size: 1.2em;
             margin-bottom: 20px;
         }
+        .circuit {
+            margin: 20px 0;
+        }
         .options {
             display: flex;
             flex-direction: column;
@@ -56,6 +59,7 @@
     <div class="container">
         <div id="quiz">
             <div class="question" id="question">로딩 중...</div>
+            <div class="circuit" id="circuit"></div>
             <div class="options" id="options"></div>
             <div class="result" id="result"></div>
         </div>
@@ -66,11 +70,20 @@
         const quizData = [
             {
                 question: "다이오드에서 전류는 어느 방향으로 흐르나요?",
+                circuit: "",
                 options: ["P에서 N으로", "N에서 P로", "양방향으로", "전류가 흐르지 않음"],
                 answer: 0
             },
             {
                 question: "다음 회로에서 LED가 켜지지 않는 이유는 무엇일까요?",
+                circuit: `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 100' width='200'>
+                            <line x1='10' y1='50' x2='50' y2='50' stroke='black' stroke-width='2'/>
+                            <polygon points='50,40 70,50 50,60' fill='none' stroke='black' stroke-width='2'/>
+                            <line x1='70' y1='50' x2='100' y2='50' stroke='black' stroke-width='2'/>
+                            <rect x='100' y='40' width='20' height='20' fill='none' stroke='black' stroke-width='2'/>
+                            <line x1='120' y1='50' x2='160' y2='50' stroke='black' stroke-width='2'/>
+                            <circle cx='160' cy='50' r='5' fill='black'/>
+                        </svg>`,
                 options: [
                     "다이오드 방향이 반대로 연결됨",
                     "전원 공급 장치가 없음",
@@ -81,6 +94,7 @@
             },
             {
                 question: "다이오드를 회로에서 반대로 연결하면 어떻게 될까요?",
+                circuit: "",
                 options: [
                     "전류가 정상적으로 흐름",
                     "전류가 흐르지 않음",
@@ -91,11 +105,31 @@
             },
             {
                 question: "다음 회로에서 X와 Y는 각각 어떤 극(P형 반도체, N형 반도체)인가요? (참고: A와 D가 켜질 때)",
+                circuit: `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 100' width='200'>
+                            <line x1='10' y1='50' x2='50' y2='50' stroke='black' stroke-width='2'/>
+                            <polygon points='50,40 70,50 50,60' fill='none' stroke='black' stroke-width='2'/>
+                            <line x1='70' y1='50' x2='100' y2='50' stroke='black' stroke-width='2'/>
+                            <circle cx='100' cy='50' r='10' fill='none' stroke='black' stroke-width='2'/>
+                            <text x='95' y='70' font-size='10'>X</text>
+                            <line x1='110' y1='50' x2='150' y2='50' stroke='black' stroke-width='2'/>
+                            <circle cx='150' cy='50' r='10' fill='none' stroke='black' stroke-width='2'/>
+                            <text x='145' y='70' font-size='10'>Y</text>
+                        </svg>`,
                 options: ["X는 P, Y는 N", "X는 N, Y는 P", "둘 다 P", "둘 다 N"],
                 answer: 0
             },
             {
                 question: "스위치를 b에 연결했을 때 B와 C가 켜진다면 X와 Y의 극은 무엇인가요?",
+                circuit: `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 100' width='200'>
+                            <line x1='10' y1='50' x2='50' y2='50' stroke='black' stroke-width='2'/>
+                            <polygon points='50,40 70,50 50,60' fill='none' stroke='black' stroke-width='2'/>
+                            <line x1='70' y1='50' x2='100' y2='50' stroke='black' stroke-width='2'/>
+                            <circle cx='100' cy='50' r='10' fill='none' stroke='black' stroke-width='2'/>
+                            <text x='95' y='70' font-size='10'>X</text>
+                            <line x1='110' y1='50' x2='150' y2='50' stroke='black' stroke-width='2'/>
+                            <circle cx='150' cy='50' r='10' fill='none' stroke='black' stroke-width='2'/>
+                            <text x='145' y='70' font-size='10'>Y</text>
+                        </svg>`,
                 options: ["X는 N, Y는 P", "X는 P, Y는 N", "둘 다 P", "둘 다 N"],
                 answer: 1
             }
@@ -103,6 +137,7 @@
 
         // DOM 요소
         const questionEl = document.getElementById("question");
+        const circuitEl = document.getElementById("circuit");
         const optionsEl = document.getElementById("options");
         const resultEl = document.getElementById("result");
 
@@ -113,6 +148,7 @@
         function loadQuestion() {
             const currentQuiz = quizData[currentQuestion];
             questionEl.textContent = currentQuiz.question;
+            circuitEl.innerHTML = currentQuiz.circuit;
             optionsEl.innerHTML = "";
             resultEl.textContent = "";
 
@@ -150,6 +186,7 @@
         // 퀴즈 종료
         function finishQuiz() {
             questionEl.textContent = `퀴즈 완료!`;
+            circuitEl.innerHTML = "";
             optionsEl.innerHTML = `점수: ${score}/${quizData.length}`;
             resultEl.textContent = "";
         }
